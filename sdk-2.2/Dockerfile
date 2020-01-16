@@ -2,7 +2,8 @@ ARG DOCKER_IMAGE=mcr.microsoft.com/dotnet/core/sdk:2.2
 FROM gittools/gitversion:5.0.2-linux-ubuntu-16.04-netcoreapp2.2 as gitversion
 FROM csakshaug/of-watchdog-wrapper as  wrapper
 FROM openfaas/of-watchdog:0.7.2 as watchdog
-FROM dxcn/ssht:0.0.1 as ssht
+FROM dxcn/ssht:0.0.2 as ssht
+FROM dxdx/env-tester:v0.0.1 as env-tester
 FROM ${DOCKER_IMAGE} as base
 ARG TRACKMAN_VERSION=1.0.1
 ARG SECRETHUB_VERSION=v0.31.0
@@ -13,6 +14,7 @@ COPY --from=gitversion /app /gitversion
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 COPY --from=wrapper /usr/bin/of-watchdog-wrapper /usr/bin/of-watchdog-wrapper
 COPY --from=ssht /usr/bin/ssht /usr/bin/ssht
+COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
 # We only add bumpver.sh for 2.2 right now
 ADD bumpver.sh /usr/local/bin/bumpver.sh
 COPY init_ssh.sh /usr/local/bin
