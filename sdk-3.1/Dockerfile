@@ -2,7 +2,7 @@ ARG DOCKER_IMAGE=mcr.microsoft.com/dotnet/core/sdk:3.1
 FROM csakshaug/of-watchdog-wrapper as  wrapper
 FROM openfaas/of-watchdog:0.7.2 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
-FROM dxdx/env-tester:v0.0.3 as env-tester
+FROM dxdx/env-tester:v0.0.4 as env-tester
 FROM ${DOCKER_IMAGE} as base
 ARG TRACKMAN_VERSION=1.0.1
 ARG SECRETHUB_VERSION=v0.31.0
