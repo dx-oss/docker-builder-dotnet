@@ -1,11 +1,11 @@
 ARG DOCKER_IMAGE=mcr.microsoft.com/dotnet/core/sdk:3.1
 FROM csakshaug/of-watchdog-wrapper as  wrapper
-FROM openfaas/of-watchdog:0.7.2 as watchdog
+FROM openfaas/of-watchdog:0.7.6 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
 FROM dxdx/env-tester:v0.0.4 as env-tester
 FROM ${DOCKER_IMAGE} as base
-ARG TRACKMAN_VERSION=1.0.1
-ARG SECRETHUB_VERSION=v0.31.0
+ARG TRACKMAN_VERSION=1.0.4
+ARG SECRETHUB_VERSION=v0.36.0
 ARG SECRETHUB_VERSION_PKG=secrethub-${SECRETHUB_VERSION}-linux-amd64.deb
 ARG TINI_VERSION=v0.18.0
 USER root
