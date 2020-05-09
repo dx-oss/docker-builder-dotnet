@@ -52,10 +52,10 @@ function build {
     run cd $branch
     run docker build --build-arg '"DOCKER_IMAGE=$image"' -t $tag .
     run docker tag $tag $tag_major
-    run docker tag $tag $tag_shaver
+    #run docker tag $tag $tag_shaver
     run docker push $tag
     run docker push $tag_major
-    run docker push $tag_shaver
+    #run docker push $tag_shaver
     for c in `ls ../common`
     do
         run rm $c
