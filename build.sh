@@ -2,6 +2,8 @@
 
 pwd=$(pwd)
 
+shaver=$(git rev-parse --short HEAD)
+
 ORG=dxdx
 NAME=docker-builder-dotnet
 
@@ -35,12 +37,14 @@ function build {
     local version=$1
     local branch=$2
     local image=$3
+    local shaver=$4
 
     local tag_version=$(echo $image | cut -d":" -f2 | cut -d"-" -f1)
     local tag_major_version=$(echo $branch | cut -d"-" -f2)
 
     local tag=$ORG/$NAME:$tag_version
     local tag_major=$ORG/$NAME:$tag_major_version
+    local tag_shaver=$ORG/$NAME:$tag_version-$shaver
 
     echo "$version ($branch) ($image) [$tag] [$tag_major]"
 
@@ -48,8 +52,10 @@ function build {
     run cd $branch
     run docker build --build-arg '"DOCKER_IMAGE=$image"' -t $tag .
     run docker tag $tag $tag_major
+    run docker tag $tag $tag_shaver
     run docker push $tag
     run docker push $tag_major
+    run docker push $tag_shaver
     for c in `ls ../common`
     do
         run rm $c
@@ -62,5 +68,5 @@ do
     branch=BRANCH_$v
     image=IMAGE_$v
 
-    build $v ${!branch} ${!image}
+    build $v ${!branch} ${!image} $shaver
 done
