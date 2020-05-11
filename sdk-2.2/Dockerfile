@@ -10,6 +10,7 @@ ARG SECRETHUB_VERSION=v0.37.0
 ARG SECRETHUB_VERSION_PKG=secrethub-${SECRETHUB_VERSION}-linux-amd64.deb
 ARG TINI_VERSION=v0.18.0
 ARG GITHUB_RELEASE=v0.8.1
+ARG SEMVER_BASH=3.0.0
 USER root
 COPY --from=gitversion /app /gitversion
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
@@ -30,7 +31,13 @@ RUN apt-get update \
     && wget https://github.com/github-release/github-release/releases/download/${GITHUB_RELEASE}/linux-amd64-github-release.bz2 \
     && bzip2 -d linux-amd64-github-release.bz2 \
     && mv linux-amd64-github-release /sbin/github-release \
-    && chmod +x /sbin/github-release \    
+    && chmod +x /sbin/github-release \
+    && curl -sSLO https://github.com/fsaintjacques/semver-tool/archive/${SEMVER_BASH}.zip \
+    && unzip ${SEMVER_BASH}.zip \
+    && mv semver-tool-${SEMVER_BASH}/src/semver /usr/bin/semver \
+    && chmod +x /usr/bin/semver \
+    && rm -rf semver-tool-${SEMVER_BASH} \
+    && rm ${SEMVER_BASH}.zip \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /root/.ssh \
     && chmod +x /usr/local/bin/bumpver.sh \
