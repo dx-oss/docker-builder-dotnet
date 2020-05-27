@@ -4,6 +4,7 @@ FROM csakshaug/of-watchdog-wrapper as  wrapper
 FROM openfaas/of-watchdog:0.7.7 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
 FROM dxdx/env-tester:v0.0.7 as env-tester
+FROM migrate/migrate as migrate
 FROM ${DOCKER_IMAGE} as base
 ARG TRACKMAN_VERSION=1.0.4
 ARG SECRETHUB_VERSION=v0.37.0
@@ -17,6 +18,7 @@ COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 COPY --from=wrapper /usr/bin/of-watchdog-wrapper /usr/bin/of-watchdog-wrapper
 COPY --from=ssht /usr/bin/ssht /usr/bin/ssht
 COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
+COPY --from=migrate /usr/local/bin/migrate /usr/bin/migrate
 # We only add bumpver.sh for 2.2 right now
 ADD bumpver.sh /usr/local/bin/bumpver.sh
 COPY init_ssh.sh /usr/local/bin
