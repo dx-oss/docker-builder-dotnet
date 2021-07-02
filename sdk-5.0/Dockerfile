@@ -1,7 +1,8 @@
-ARG DOCKER_IMAGE=mcr.microsoft.com/dotnet/core/sdk:3.0
-FROM csakshaug/of-watchdog-wrapper as  wrapper
+ARG DOCKER_IMAGE=mcr.microsoft.com/dotnet/sdk:5.0
+FROM dxdx/fwatchdog-wrapper:v0.4.2 as wrapper
 FROM openfaas/of-watchdog:0.7.7 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
+FROM dxdx/wfi:v0.1 as wfi
 FROM dxdx/env-tester:v0.0.9 as env-tester
 FROM migrate/migrate as migrate
 FROM ${DOCKER_IMAGE} as base
@@ -13,8 +14,11 @@ ARG GITHUB_RELEASE=v0.8.1
 ARG SEMVER_BASH=3.0.0
 USER root
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
-COPY --from=wrapper /usr/bin/of-watchdog-wrapper /usr/bin/of-watchdog-wrapper
+COPY --from=wrapper /fwatchdog-wrapper /usr/bin/ofww
+COPY --from=wrapper /fwatchdog-wrapper /usr/bin/fwatchdog-wrapper
+COPY --from=wrapper /fwatchdog-wrapper /usr/bin/of-watchdog-wrapper
 COPY --from=ssht /usr/bin/ssht /usr/bin/ssht
+COPY --from=wfi /usr/bin/wfi /usr/bin/wfi
 COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
 COPY --from=migrate /usr/local/bin/migrate /usr/bin/migrate
 COPY init_ssh.sh /usr/local/bin

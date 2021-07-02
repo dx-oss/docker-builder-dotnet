@@ -3,11 +3,11 @@ FROM gittools/gitversion:5.0.2-linux-ubuntu-16.04-netcoreapp2.2 as gitversion
 FROM csakshaug/of-watchdog-wrapper as  wrapper
 FROM openfaas/of-watchdog:0.7.7 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
-FROM dxdx/env-tester:v0.0.7 as env-tester
+FROM dxdx/env-tester:v0.0.9 as env-tester
 FROM migrate/migrate as migrate
 FROM ${DOCKER_IMAGE} as base
 ARG TRACKMAN_VERSION=1.0.4
-ARG SECRETHUB_VERSION=v0.37.0
+ARG SECRETHUB_VERSION=v0.42.1
 ARG SECRETHUB_VERSION_PKG=secrethub-${SECRETHUB_VERSION}-linux-amd64.deb
 ARG TINI_VERSION=v0.18.0
 ARG GITHUB_RELEASE=v0.8.1
